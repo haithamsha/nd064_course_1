@@ -6,32 +6,18 @@ name: Python version
 on: [push]
 ## List the steps to be executed by the workflow
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8,3.9]
   ## Set the name of the job
+  check-python-version:
     ## Configure the operating system the workflow should run on.
     ## In this case, the job on Ubuntu
+    runs-on: ubuntu-latest
     ## Define a sequence of steps to be executed 
     steps:
       ## Use the public `checkout` actoin  in version v2  
       ## to checkout the existing code in the repository
       - uses: actions/checkout@v2
-      - name: Set up python ${{ matrix.python-version}}
       ## Use the public `setup-python` action  in version v2  
       ## to install python on the Ubuntu based environment 
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version}}
-      - name: install dependencies
+      - uses: actions/setup-python@v2
       ## Executes the `python --version` command
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Test with pytest
-        run: |
-          pytest
-        
+      - run: python --version
